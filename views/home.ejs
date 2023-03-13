@@ -1,34 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
 
-    <% if (isLoggedIn()) { %>
-    <form action="/sessions" method="post">
-      <input type="hidden" name="_method" value="delete">
-      <button>logout</button>
-    </form>
-    <p>logged in as <%= currentUser.email %></p>
-    <% } %>
+<a href="/signup" class="home-log-sign">Sign Up</a>
+<h1>goodfoodhunting</h1>
 
+<section class="dishes">
+  <% for (let dish of dishes) { %>
 
-    <div><%= email %></div>
-    <a href="/dishes/new">share a dish</a>
-    <h1>goodfoodhunting</h1>
-
-    <% for (let dish of dishes) { %>
-
-    <h2><a href="/dishes/<%= dish.id %>"><%= dish.title %></a></h2>
+  <div class="ui-card">
     <img src="<%= dish.image_url %>" alt="" />
+    <h2><a href="/dishes/<%= dish.id %>"><%= dish.title %></a></h2>
+  </div>
 
-    <% } %>
-
-    <!-- <script src="/client.js"></script> -->
-  </body>
-</html>
+  <% } %>
+</section>

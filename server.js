@@ -9,6 +9,7 @@ const methodOverride = require("./middlewares/method_override")
 const dishController = require("./controllers/dish_controller")
 const sessionController = require("./controllers/session_controller")
 const viewHelpers = require("./middlewares/view_helpers")
+const expressLayouts = require("express-ejs-layouts")
 
 
 app.set("view engine", "ejs")
@@ -18,6 +19,7 @@ app.use(logger)
 app.use(express.static("public")) 
 app.use(express.urlencoded({ extended: true })) 
 app.use(methodOverride) // super important to come after the body
+app.use(expressLayouts)
 app.use(
   session({
   secret: process.env.SESSION_SECRET || "mistyrose",

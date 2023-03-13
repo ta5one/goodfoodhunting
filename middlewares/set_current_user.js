@@ -19,7 +19,7 @@ function setCurrentUser(req, res, next) {
         if (err) {
           console.log(err);
         } else {
-          res.locals.currentUser - dbRes.rows[0]
+          res.locals.currentUser = dbRes.rows[0]
           next()
         }
       })

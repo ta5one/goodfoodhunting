@@ -6,19 +6,17 @@ const ensureLoggedIn = require("./../middlewares/ensure_logged_in")
 const db = require("./../db")
 
 router.get("/", (req, res) => {
-  console.log(req.user)
   const sql = "SELECT * FROM dishes;"
 
   db.query(sql, (err, dbRes) => {
     const dishes = dbRes.rows
     res.render("home", {
       dishes: dishes,
-      email: req.session.email,
     })
   })
 })
 //       |
-router.get("/dishes/new", (req, res) => {
+router.get("/dishes/new", ensureLoggedIn, (req, res) => {
   res.render("new_dish")
 })
 //       |
@@ -44,21 +42,20 @@ router.get("/dishes/:id", ensureLoggedIn, (req, res) => {
 // post redirect get
 // https://en.wikipedia.org/wiki/Post/Redirect/Get
 // routes are http method + path
-router.post("/dishes", (req, res) => {
-  if (!req.session.userId) {
-    res.redirect("/login")
-    return
-  }
-
+router.post("/dishes", ensureLoggedIn, (req, res) => {
   // prepare the SQL we're sending to the database
-  const sql = 
-  `INSERT INTO dishes (title, image_url,
-    user_id) 
-  VALUES ($1, $2, $3);`
+  const sql = `
+    INSERT INTO dishes (title, image_url, user_id) 
+    VALUES ($1, $2, $3);
+  `
 
-  db.query(sql, [req.body.title, req.body.image_url, res.locals.currentUser.id], (err, dbRes) => {
-    res.redirect("/")
-  })
+  db.query(
+    sql,
+    [req.body.title, req.body.image_url, req.session.userId],
+    (err, dbRes) => {
+      res.redirect("/")
+    }
+  )
 })
 //       |
 //       |
@@ -67,9 +64,9 @@ router.get("/dishes/:dish_id/edit", (req, res) => {
   // fetch the record for this dish
   // so I can use it in the form in the template
 
-  const sql = `SELECT * FROM dishes WHERE id = ${req.params.dish_id};`
+  const sql = `SELECT * FROM dishes WHERE id = $1;`
 
-  db.query(sql, (err, dbRes) => {
+  db.query(sql, [req.params.dish_id], (err, dbRes) => {
     if (err) {
       console.log(err)
     } else {
@@ -82,19 +79,23 @@ router.get("/dishes/:dish_id/edit", (req, res) => {
 //       |
 //       V
 router.put("/dishes/:dish_id", (req, res) => {
-  const sql = `UPDATE dishes SET title = '${req.body.title}', image_url = '${req.body.image_url}' WHERE id = ${req.params.dish_id};`
+  const sql = `UPDATE dishes SET title = $1, image_url = $2 WHERE id = $3;`
 
-  db.query(sql, (err, dbRes) => {
-    res.redirect(`/dishes/${req.params.dish_id}`)
-  })
+  db.query(
+    sql,
+    [req.body.title, req.body.image_url, req.params.dish_id],
+    (err, dbRes) => {
+      res.redirect(`/dishes/${req.params.dish_id}`)
+    }
+  )
 })
 //       |
 //       |
 //       V
 router.delete("/dishes/:dish_id", (req, res) => {
-  const sql = `DELETE FROM dishes WHERE id = ${req.params.dish_id};`
+  const sql = `DELETE FROM dishes WHERE id = $1;`
 
-  db.query(sql, (err, dbRes) => {
+  db.query(sql, [req.params.dish_id], (err, dbRes) => {
     res.redirect("/")
   })
 })

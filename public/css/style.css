@@ -1,3 +1,58 @@
 body {
-    background-color: mistyrose;
-  }
+  background-image: url("https://static.vecteezy.com/system/resources/previews/012/184/529/original/realistic-detailed-chalkboard-texture-background-free-vector.jpg");
+}
+
+img {
+  width: 150px;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 4px;
+  font-weight: 600;
+  margin: 0 10px;
+  width: 130px;
+  padding: 8px 0;
+  box-shadow: 0 0 20px rgba(104, 85, 224, 0.2);
+  transition: 0.4s;
+}
+
+button:hover {
+  color: white;
+  box-shadow: 0 0 20px rgba(96, 96, 96, 0.6);
+  background-color: rgba(96, 96, 96, 1);
+}
+
+.dishes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 30px;
+}
+
+.ui-card {
+  text-decoration: none;
+  background-color: rgb(131, 131, 131);
+  text-align: center;
+  border: 2px solid white;
+}
+
+.ui-card img {
+  width: 100%;
+}
+
+h1, h2, h3, p {
+  color: aliceblue;
+}
+
+.home-log-sign {
+  display: flex;
+  color: aliceblue;
+  font-size: 24px;
+  flex-direction: row;
+}
+
+.input-label {
+  color: aliceblue;
+
+}
